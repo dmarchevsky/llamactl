@@ -11,7 +11,7 @@ services:
       - "8888:8080"
     volumes:
       - ./data/llamacpp:/data
-      - ./models:/models  # Mount models directory
+      - ${MODELS_DIR}:/models  # Mount models directory
       - ~/.cache/llama.cpp:/root/.cache/llama.cpp  # Llama.cpp cache
     environment:
       # Set data directory for persistence
