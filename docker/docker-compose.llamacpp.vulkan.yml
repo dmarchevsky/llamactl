@@ -17,6 +17,8 @@ services:
       #- LLAMACTL_DATA_DIR=/data
       # Enable Docker mode for nested containers
       - LLAMACTL_LLAMACPP_DOCKER_ENABLED=${LLAMACTL_LLAMACPP_DOCKER_ENABLED}
+      - LLAMACTL_REQUIRE_INFERENCE_AUTH=${LLAMACTL_REQUIRE_INFERENCE_AUTH}
+      - LLAMACTL_REQUIRE_MANAGEMENT_AUTH=${LLAMACTL_REQUIRE_MANAGEMENT_AUTH}
     devices:
       - "/dev/dri:/dev/dri"
     group_add:
