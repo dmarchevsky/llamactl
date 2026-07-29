@@ -8,7 +8,7 @@ services:
     image: llamactl:llamacpp-vulkan
     container_name: llamactl-llamacpp
     ports:
-      - "8080:8080"
+      - "8888:8080"
     volumes:
       - ./data/llamacpp:/data
       - ./models:/models  # Mount models directory
@@ -16,13 +16,10 @@ services:
     environment:
       # Set data directory for persistence
       - LLAMACTL_DATA_DIR=/data
-      # Enable Docker mode for nested containers (if needed)
-      - LLAMACTL_LLAMACPP_DOCKER_ENABLED=false
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+      # Enable Docker mode for nested containers
+      - LLAMACTL_LLAMACPP_DOCKER_ENABLED=true
+    devices:
+      - "/dev/dri:/dev/dri"
+    group_add:
+      - video
     restart: unless-stopped
