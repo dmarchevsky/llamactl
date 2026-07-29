@@ -6,7 +6,7 @@ services:
     image: llamactl:llamacpp-vulkan
     container_name: llamactl-llamacpp
     ports:
-      - "8888:8080"
+      - "8000:8080"
     volumes:
       - ${HOST_MODELS_DIR}:/models  # Models directory
       - ${HOST_HF_CACHE}:/root/.cache/huggingface
