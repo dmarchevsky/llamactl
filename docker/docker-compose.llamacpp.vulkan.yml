@@ -18,7 +18,7 @@ services:
       # Set data directory for persistence
       - LLAMACTL_DATA_DIR=/data
       # Enable Docker mode for nested containers
-      - LLAMACTL_LLAMACPP_DOCKER_ENABLED=true
+      - LLAMACTL_LLAMACPP_DOCKER_ENABLED=${LLAMACTL_LLAMACPP_DOCKER_ENABLED}
     devices:
       - "/dev/dri:/dev/dri"
     group_add:
