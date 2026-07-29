@@ -10,10 +10,9 @@ services:
     ports:
       - "8888:8080"
     volumes:
-      - ./data/llamacpp:/data
       - ${HOST_MODELS_DIR}:/models  # Models directory
       - ${HOST_HF_CACHE}:/root/.cache/huggingface
-      - ~/.cache/llama.cpp:/root/.cache/llama.cpp  # Llama.cpp cache
+      - ${HOST_CACHE_DIR}:/root/.cache  # Llama.cpp cache
       - ${HOST_DATA_DIR}:/root/.local/share/llamactl
     environment:
       # Set data directory for persistence
