@@ -4,7 +4,7 @@ services:
   llamactl-llamacpp:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.llamacpp
+      dockerfile: docker/Dockerfile.llamacpp.vulkan
     image: llamactl:llamacpp-vulkan
     container_name: llamactl-llamacpp
     ports:
@@ -23,4 +23,6 @@ services:
       - "/dev/dri:/dev/dri"
     group_add:
       - video
+    ulimits:
+      memlock: -1
     restart: unless-stopped
