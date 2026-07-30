@@ -1571,6 +1571,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/health": {
+            "get": {
+                "description": "Returns the health status of the llamactl server, database, and instances",
+                "tags": [
+                    "System"
+                ],
+                "summary": "Get server health status",
+                "responses": {
+                    "200": {
+                        "description": "Server is healthy",
+                        "schema": {
+                            "$ref": "#/definitions/server.healthResponse"
+                        }
+                    },
+                    "503": {
+                        "description": "Server is unhealthy",
+                        "schema": {
+                            "$ref": "#/definitions/server.healthResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/llama-cpp/{name}/": {
             "get": {
                 "security": [
@@ -2826,6 +2849,31 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "command": {
+                    "type": "string"
+                }
+            }
+        },
+        "server.healthResponse": {
+            "type": "object",
+            "properties": {
+                "database": {
+                    "type": "string"
+                },
+                "instances": {
+                    "type": "object",
+                    "properties": {
+                        "running": {
+                            "type": "integer"
+                        },
+                        "total": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "version": {
                     "type": "string"
                 }
             }

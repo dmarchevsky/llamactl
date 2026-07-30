@@ -434,6 +434,22 @@ definitions:
       command:
         type: string
     type: object
+  server.healthResponse:
+    properties:
+      database:
+        type: string
+      instances:
+        properties:
+          running:
+            type: integer
+          total:
+            type: integer
+        type: object
+      status:
+        type: string
+      version:
+        type: string
+    type: object
 info:
   contact: {}
   description: llamactl is a control server for managing Llama Server instances.
@@ -1435,6 +1451,22 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get llamactl version
+      tags:
+      - System
+  /health:
+    get:
+      description: Returns the health status of the llamactl server, database, and
+        instances
+      responses:
+        "200":
+          description: Server is healthy
+          schema:
+            $ref: '#/definitions/server.healthResponse'
+        "503":
+          description: Server is unhealthy
+          schema:
+            $ref: '#/definitions/server.healthResponse'
+      summary: Get server health status
       tags:
       - System
   /llama-cpp/{name}/:

@@ -31,6 +31,7 @@ type AuthStore interface {
 	TouchKey(ctx context.Context, id int) error
 	GetPermissions(ctx context.Context, keyID int) ([]auth.KeyPermission, error)
 	HasPermission(ctx context.Context, keyID, instanceID int) (bool, error)
+	HealthCheck() error
 }
 
 // Config contains database configuration settings

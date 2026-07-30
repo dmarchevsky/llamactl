@@ -32,6 +32,9 @@ func SetupRouter(handler *Handler) *chi.Mux {
 		))
 	}
 
+	// Health check endpoint (unauthenticated)
+	r.Get("/health", handler.HealthHandler())
+
 	// Define routes
 	r.Route("/api/v1", func(r chi.Router) {
 
