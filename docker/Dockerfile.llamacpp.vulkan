@@ -1,13 +1,32 @@
+# WebUI build stage
+FROM node:20-alpine AS webui-builder
+
+WORKDIR /webui
+
+RUN apk add --no-cache git
+
+RUN git clone --depth 1 -b main https://github.com/dmarchevsky/llamactl.git /src
+
+RUN cp -r /src/webui/. ./ && npm ci && npm run build
+
+# Go build stage
+# Uses a glibc-based image (not alpine/musl) so the resulting binary is
+# compatible with the glibc-based llama.cpp final image below.
+FROM golang:1.26 AS llamactl-builder
+
+WORKDIR /build
+
+RUN git clone --depth 1 -b main https://github.com/dmarchevsky/llamactl.git .
+
+COPY --from=webui-builder /webui/dist ./webui/dist
+
+RUN CGO_ENABLED=1 go build -ldflags="-s -w" -o llamactl ./cmd/server
+
+# Final stage
 FROM ghcr.io/ggml-org/llama.cpp:server-vulkan
 
-# Install curl for downloading llamactl
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Download and install the latest llamactl release
-RUN LATEST_VERSION=$(curl -s https://api.github.com/repos/lordmathis/llamactl/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/') && \
-    curl -L "https://github.com/lordmathis/llamactl/releases/download/${LATEST_VERSION}/llamactl-${LATEST_VERSION}-linux-amd64.tar.gz" | tar -xz && \
-    mv llamactl /usr/local/bin/ && \
-    chmod +x /usr/local/bin/llamactl
+COPY --from=llamactl-builder /build/llamactl /usr/local/bin/llamactl
+RUN chmod +x /usr/local/bin/llamactl
 
 # Set working directory
 RUN mkdir -p /data
