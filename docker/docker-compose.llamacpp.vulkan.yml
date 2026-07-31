@@ -25,7 +25,9 @@ services:
       - video
     ulimits:
       memlock: -1
-    healthcheck:    
+    mem_limit: 40g           # hard cap (tune after measuring)
+    mem_reservation: 24g     # soft expectation
+    healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
       interval: 30s
       timeout: 5s
